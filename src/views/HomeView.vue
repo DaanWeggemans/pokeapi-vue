@@ -14,7 +14,12 @@
     const search_by = ref("");
 
     onMounted(async () => {
-        const local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
+        let local_pokemons = [];
+        try {
+            local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
+        } catch {
+            localStorage.removeItem(POKEMONS_KEY);
+        }
 
         if (local_pokemons.length) {
             cached_pokemons = local_pokemons;
