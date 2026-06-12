@@ -21,7 +21,7 @@
             updateList();
         } else await getPokemons();
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
     });
 
     onUnmounted(() => window.removeEventListener('scroll', handleScroll));
