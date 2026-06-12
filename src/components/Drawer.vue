@@ -12,8 +12,8 @@
                         <span class="mdc-list-item__text">Pokemons</span>
                     </a>
                 </RouterLink>
-                <RouterLink v-slot="{ isActive, navigate }" to="/favorites" custom>
-                    <a @click="navigate" class="mdc-list-item" :class="isActive ? 'mdc-list-item--activated' : null" :aria-current="isActive ? 'page' : null" :tabindex="isActive ? '0' : null">
+                <RouterLink v-slot="{ href, isActive, navigate }" to="/favorites" custom>
+                    <a :href="href" @click.prevent="navigate" class="mdc-list-item" :class="isActive ? 'mdc-list-item--activated' : null" :aria-current="isActive ? 'page' : null">
                         <span class="mdc-list-item__ripple"></span>
                         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
                         <span class="mdc-list-item__text">Favorites</span>
