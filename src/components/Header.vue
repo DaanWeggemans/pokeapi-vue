@@ -14,7 +14,10 @@
     async function toggleSearch() {
         isSearchOpen.value = !isSearchOpen.value;
         if (!isSearchOpen.value) {
-            text_field.value = "";
+            if (text_field) {
+                text_field.value = "";
+                text_field.destroy();
+            }
             text_field = null;
             return;
         }
