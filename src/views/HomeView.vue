@@ -1,64 +1,74 @@
 <script setup>
     import PokemonCard from '@/components/PokemonCard.vue';
-    import { onMounted, onUnmounted, ref, watchEffect } from 'vue';
+    import { onMounted, onUnmounted, ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
+
+    const ITEMS_PER_PAGE = 24;
+    const POKEMONS_KEY = "pokemons";
 
     const route = useRoute();
 
-    const laptop_row_amount = 4;
-    const laptop_column_amount = 6;
-    const scroll_modifier = 4;
+    let cached_pokemons = [];
 
     const pokemons = ref([]);
-    const searchBy = ref("");
+    const search_by = ref("");
 
-    onMounted(() => {
-        const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
+    onMounted(async () => {
+        const local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
 
         if (local_pokemons.length) {
-            pokemons.value = mapPokemons(local_pokemons.slice(0, pokemons.value.length + laptop_row_amount * laptop_column_amount));
-        } else {
-            fetch('https://pokeapi.co/api/v2/pokemon?limit=99999999')
-                .then(result => result.json())
-                .then(result => {
-                    const fetched_pokemons = result.results.map(pokemon => {
-                        const index_string = pokemon.url.substring(pokemon.url.indexOf("pokemon") + 8).replaceAll("/", "");
-                        const index = Number(index_string);
+            cached_pokemons = local_pokemons;
+            updateList();
+        } else await getPokemons();
 
-                        return {
-                            id: index,
-                            name: pokemon.name.replaceAll('-', ' '),
-                            url: pokemon.url,
-                            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
-                        };
-                    });
-
-                    localStorage.setItem("pokemons", JSON.stringify(fetched_pokemons));
-                    pokemons.value = mapPokemons(fetched_pokemons.pokemons.slice(0, pokemons.value.length + laptop_row_amount * laptop_column_amount));
-                });
-        }
-
-        window.addEventListener('scroll', loadNewPokemons);
+        window.addEventListener('scroll', handleScroll);
     });
 
-    onUnmounted(() => window.removeEventListener('scroll', loadNewPokemons));
+    onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 
-    watchEffect(() => {
-        searchBy.value = route.params.searchBy ?? "";
-        const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
-        pokemons.value = mapPokemons(local_pokemons).slice(0, pokemons.value.length + laptop_row_amount * laptop_column_amount);
-    });
+    watch(
+        () => route.params.searchBy,
+        (new_search_by) => {
+            window.scroll({ top: 0 });
+            search_by.value = (new_search_by ?? "").toLowerCase();
+            updateList(true);
+        },
+        { immediate: true }
+    );
 
-    function mapPokemons(pokemons) {
-        return pokemons.filter(x => x.name.toLowerCase().includes(searchBy.value.toLowerCase()));
+    async function getPokemons() {
+        const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1500");
+        const data = await response.json();
+
+        cached_pokemons = data.results.map(pokemon => {
+            const parts = pokemon.url.split('/').filter(x => x);
+            const index = Number(parts[parts.length - 1]);
+
+            return {
+                id: index,
+                name: pokemon.name.replaceAll('-', ' '),
+                url: pokemon.url,
+                image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
+            };
+        });
+
+        localStorage.setItem(POKEMONS_KEY, JSON.stringify(cached_pokemons));
+        updateList();
     }
 
-    function loadNewPokemons() {
-        const distanceToBottom = document.body.offsetHeight - (window.scrollY + window.innerHeight);
-        if (distanceToBottom > 50) return;
+    function updateList(reset_length = false) {
+        const filtered_pokemons = cached_pokemons.filter(x => x.name.toLowerCase().includes(search_by.value));
 
-        const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
-        pokemons.value = mapPokemons(local_pokemons.slice(0, pokemons.value.length + laptop_row_amount * laptop_column_amount * scroll_modifier));
+        const length = reset_length ? 0 : pokemons.value.length;
+        const target_length = length + ITEMS_PER_PAGE;
+
+        pokemons.value = filtered_pokemons.slice(0, target_length);
+    }
+
+    function handleScroll() {
+        const distance_to_bottom = document.body.offsetHeight - (window.scrollY + window.innerHeight);
+        if (distance_to_bottom > 50) return;
+        updateList();
     }
 </script>
 
@@ -78,6 +88,7 @@
 <style scoped>
     .pokemons-container {
         background-color: color-mix(in hsl, var(--mdc-theme-primary), hsl(0, 0%, 20%));
+        min-height: calc(100vh - 64px);
     }
     
     .pokemons {

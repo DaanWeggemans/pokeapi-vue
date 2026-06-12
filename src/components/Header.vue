@@ -21,6 +21,7 @@
         
         await nextTick();
         const text_field_element = document.querySelector('.mdc-text-field');
+        text_field_element.focus();
         text_field = new MDCTextField(text_field_element);
     }
 
@@ -59,7 +60,9 @@
 </template>
 
 <style scoped>
-    .mdc-top-app-bar__title {
-        color: white;
+    .mdc-top-app-bar__title,
+    .mdc-floating-label--float-above,
+    .mdc-text-field__input {
+        color: white !important;
     }
 </style>

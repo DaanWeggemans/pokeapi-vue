@@ -28,3 +28,10 @@
         <RouterView />
     </main>
 </template>
+
+<style scoped>
+    .mdc-top-app-bar--fixed-adjust {
+        background-color: color-mix(in hsl, var(--mdc-theme-primary), hsl(0, 0%, 20%));
+        min-height: 100vh;
+    }
+</style>
