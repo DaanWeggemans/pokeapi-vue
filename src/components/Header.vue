@@ -24,8 +24,9 @@
         
         await nextTick();
         const text_field_element = document.querySelector('.mdc-text-field');
-        text_field_element.focus();
+        if (!text_field_element) return;
         text_field = new MDCTextField(text_field_element);
+        text_field_element.querySelector('.mdc-text-field__input')?.focus();
     }
 
     function search(event) {
