@@ -53,7 +53,7 @@
                         </span>
                         <span class="mdc-notched-outline__trailing"></span>
                     </span>
-                    <input @keypress="search" type="text" class="mdc-text-field__input" aria-labelledby="my-label-id">
+                    <input @keydown="search" type="text" class="mdc-text-field__input" aria-labelledby="my-label-id">
                 </label>
                 <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
                     aria-label="Search" @click="toggleSearch">search</button>
