@@ -38,8 +38,8 @@
 
     async function getPokemons() {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1500");
+        if (!response.ok) return;
         const data = await response.json();
-
         cached_pokemons = data.results.map(pokemon => {
             const parts = pokemon.url.split('/').filter(x => x);
             const index = Number(parts[parts.length - 1]);
