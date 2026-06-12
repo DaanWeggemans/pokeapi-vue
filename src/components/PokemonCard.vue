@@ -1,6 +1,4 @@
 <script setup>
-    import { RouterLink } from 'vue-router';
-
     defineProps({
         id: Number,
         name: String,
@@ -12,10 +10,10 @@
 </script>
 
 <template>
-    <RouterLink :to="`/pokemon/${id}`" class="pokemon">
+    <div class="pokemon">
         <img @error="image_fallback($event)" :src="image" :alt="name">
         <p>{{ name }}</p>
-    </RouterLink>
+    </div>
 </template>
 
 <style scoped>
@@ -25,6 +23,7 @@
         flex-direction: column;
         text-decoration: none;
         align-items: center;
+        cursor: pointer;
         display: flex;
         padding: 1rem;
         width: 100%;

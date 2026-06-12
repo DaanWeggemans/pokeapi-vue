@@ -8,6 +8,8 @@
 
     const route = useRoute();
 
+    const emit = defineEmits(["select-pokemon"]);
+
     let cached_pokemons = [];
 
     const pokemons = ref([]);
@@ -85,6 +87,7 @@
                 :name="pokemon.name"
                 :url="pokemon.url"
                 :image="pokemon.image"
+                @click="emit('select-pokemon', pokemon)"
             />
         </div>
     </div>
