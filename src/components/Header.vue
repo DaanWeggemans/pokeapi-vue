@@ -31,7 +31,8 @@
 
     function search(event) {
         if (event.key != "Enter") return;
-        router.push(`/${text_field.value.toLowerCase()}`);
+        const term = encodeURIComponent((text_field?.value ?? "").toLowerCase().trim());
+        router.push(term ? `/${term}` : '/');
         toggleSearch();
     }
 </script>
