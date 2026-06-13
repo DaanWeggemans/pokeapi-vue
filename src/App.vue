@@ -53,6 +53,7 @@
     <Sheet
         :isOpen="Boolean(selected_pokemon.id)"
         :id="selected_pokemon.id ?? 0"
+        @select-pokemon="selectPokemon"
         @close-sheet="closeSheet"
     />
 </template>

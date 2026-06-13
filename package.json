@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material/button": "^14.0.0",
     "@material/drawer": "^14.0.0",
     "@material/textfield": "^14.0.0",
     "@material/top-app-bar": "^14.0.0",
