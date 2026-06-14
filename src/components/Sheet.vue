@@ -228,7 +228,7 @@
         background-image: radial-gradient(closest-side, color-mix(in hsl, var(--mdc-theme-primary), hsl(0, 0%, 0%, 50%)), transparent);
         border-radius: 0.4rem;
         position: relative;
-        height: 25rem;
+        height: 20rem;
     }
 
     .image img {
@@ -260,12 +260,14 @@
 
     .abilities {
         background-color: color-mix(in hsl, var(--mdc-theme-primary), hsl(0, 0%, 18%));
+        grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr));
         border-radius: 0.4rem;
         margin-bottom: 2rem;
         width: fit-content;
         padding: 0.5rem;
-        display: flex;
+        display: grid;
         gap: 0.4rem;
+        width: 100%;
 
         .ability {
             background-color: var(--mdc-theme-primary);

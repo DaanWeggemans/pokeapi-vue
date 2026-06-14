@@ -1,23 +1,27 @@
-<script setup></script>
+<script setup>
+    import { computed } from 'vue';
+    import { useRoute } from 'vue-router';
+
+    const route = useRoute();
+
+    const isActive = computed(() => route.matched.some(x => !['/', '/favorites'].includes(x.path)));
+</script>
 
 <template>
     <aside class="mdc-drawer mdc-drawer--modal">
         <div class="mdc-drawer__content">
             <img class="mdc-drawer-logo" src="/images/pokedex-logo.png" alt="Pokedex">
             <nav class="mdc-list">
-                <RouterLink v-slot="{ href, isActive, navigate }" to="/" custom>
-                    <a :href="href" @click="navigate" class="mdc-list-item" :class="isActive ? 'mdc-list-item--activated' : null" :aria-current="isActive ? 'page' : null">
-                        <span class="mdc-list-item__ripple"></span>
-                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">catching_pokemon</i>
-                        <span class="mdc-list-item__text">Pokemons</span>
-                    </a>
+                <RouterLink to="/" class="mdc-list-item" active-class="mdc-list-item--activated" aria-current-value="page"
+                    :class="isActive ? 'mdc-list-item--activated' : null" :aria-current="isActive ? 'page' : null">
+                    <span class="mdc-list-item__ripple"></span>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">catching_pokemon</i>
+                    <span class="mdc-list-item__text">Pokemons</span>
                 </RouterLink>
-                <RouterLink v-slot="{ href, isActive, navigate }" to="/favorites" custom>
-                    <a :href="href" @click="navigate" class="mdc-list-item" :class="isActive ? 'mdc-list-item--activated' : null" :aria-current="isActive ? 'page' : null">
-                        <span class="mdc-list-item__ripple"></span>
-                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
-                        <span class="mdc-list-item__text">Favorites</span>
-                    </a>
+                <RouterLink to="/favorites" class="mdc-list-item" active-class="mdc-list-item--activated" aria-current-value="page">
+                    <span class="mdc-list-item__ripple"></span>
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">favorite</i>
+                    <span class="mdc-list-item__text">Favorites</span>
                 </RouterLink>
             </nav>
         </div>

@@ -1,5 +1,6 @@
 <script setup>
     import { ref, watch } from 'vue';
+import PokemonCard from './PokemonCard.vue';
 
     const props = defineProps({
         isOpen: Boolean,
@@ -94,13 +95,22 @@
         </header>
         <main class="mdc-top-app-bar--fixed-adjust">
             <div v-if="pokemon.evolutions" class="evolution-chain">
-                <div v-for="chain of pokemon.evolutions" class="evolution-item">
-                    <button v-for="item of chain" class="evolution-button" @click="emit('select-pokemon', item)">
-                        <img :src="item.image" :alt="item.name">
-                        <p>{{ item.name }}</p>
-                    </button>
-                    <p class="next">></p>
-                </div>
+                <template v-for="(chain, index) of pokemon.evolutions">
+                    <div class="evolution-item">
+                        <!-- <button v-for="item of chain" class="evolution-button" @click="emit('select-pokemon', item)">
+                            <img :src="item.image" :alt="item.name">
+                            <p>{{ item.name }}</p>
+                        </button> -->
+                        <PokemonCard v-for="item of chain" :key="item.id"
+                            :id="item.id"
+                            :name="item.name"
+                            :url="item.url"
+                            :image="item.image"
+                            @click="emit('select-pokemon', item)"
+                        />
+                    </div>
+                    <p v-if="index != pokemon.evolutions.length - 1" class="next">></p>
+                </template>
             </div>
         </main>
     </div>
@@ -110,7 +120,8 @@
     .evolution {
         background-color: #2e2e2e;
         transition: 0.3s ease;
-        min-height: 250px;
+        min-height: 260px;
+        max-height: 350px;
         position: fixed;
         margin-left: 0;
         width: 100%;
@@ -120,5 +131,22 @@
 
     .evolution-out-of-view {
         margin-bottom: -100%;
+    }
+
+    .evolution-chain {
+        min-height: calc(260px - 64px);
+        max-height: calc(350px - 64px);
+        justify-content: safe center;
+        align-items: safe center;
+        overflow: auto;
+        padding: 1rem;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .evolution-item {
+        flex-direction: column;
+        display: flex;
+        gap: 1rem;
     }
 </style>
