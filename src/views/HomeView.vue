@@ -3,10 +3,12 @@
     import { onMounted, onUnmounted, ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
 
-    const ITEMS_PER_PAGE = 24;
+    const ITEMS_PER_PAGE = 36;
     const POKEMONS_KEY = "pokemons";
 
     const route = useRoute();
+
+    const emit = defineEmits(["select-pokemon"]);
 
     let cached_pokemons = [];
 
@@ -14,12 +16,7 @@
     const search_by = ref("");
 
     onMounted(async () => {
-        let local_pokemons = [];
-        try {
-            local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
-        } catch {
-            localStorage.removeItem(POKEMONS_KEY);
-        }
+        const local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
 
         if (local_pokemons.length) {
             cached_pokemons = local_pokemons;
@@ -85,6 +82,7 @@
                 :name="pokemon.name"
                 :url="pokemon.url"
                 :image="pokemon.image"
+                @click="emit('select-pokemon', pokemon)"
             />
         </div>
     </div>

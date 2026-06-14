@@ -7,6 +7,8 @@
 @use "@material/notched-outline/mdc-notched-outline";
 @use "@material/textfield";
 
+@use "@material/button/styles";
+
 @include drawer.core-styles;
 @include drawer.dismissible-core-styles;
 @include drawer.modal-core-styles;

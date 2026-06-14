@@ -46,7 +46,6 @@
                 <RouterLink to="/" class="mdc-top-app-bar__title">Pokedex</RouterLink>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-                <!-- <input v-if="isSearchOpen" type="text" v-model="searchBy" @keypress="search($event)"/> -->
                 <label v-if="isSearchOpen" class="mdc-text-field mdc-text-field--outlined">
                     <span class="mdc-notched-outline">
                         <span class="mdc-notched-outline__leading"></span>
