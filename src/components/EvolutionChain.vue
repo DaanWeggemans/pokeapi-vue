@@ -97,10 +97,6 @@
             <div v-if="pokemon.evolutions" class="evolution-chain">
                 <template v-for="(chain, index) of pokemon.evolutions">
                     <div class="evolution-item">
-                        <!-- <button v-for="item of chain" class="evolution-button" @click="emit('select-pokemon', item)">
-                            <img :src="item.image" :alt="item.name">
-                            <p>{{ item.name }}</p>
-                        </button> -->
                         <PokemonCard v-for="item of chain" :key="item.id"
                             :id="item.id"
                             :name="item.name"
