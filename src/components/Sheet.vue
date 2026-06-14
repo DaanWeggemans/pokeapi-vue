@@ -1,7 +1,7 @@
 <script setup>
     import { ref, watch } from 'vue';
     import EvolutionChain from './EvolutionChain.vue';
-import { useShare } from '@vueuse/core';
+    import { useShare } from '@vueuse/core';
 
     const props = defineProps({
         isOpen: Boolean,
