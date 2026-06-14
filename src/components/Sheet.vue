@@ -58,7 +58,6 @@
     const get_stat = (stat) => Object.values(pokemon.value.stats)?.find(x => x.name == stat)?.base ?? "N/A";
     const image_fallback = (event) => event.target.src = '/images/pokeball-placeholder.png';
     const toggle_evolutions = () => show_evolution_chain.value = !show_evolution_chain.value;
-    const toggle_favorite_hover = () => favorite_hover.value = !favorite_hover.value;
 
     function extract_extension(data) {
         return {
@@ -111,7 +110,7 @@
                 </section>
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                     <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                        aria-label="Favorite" @click="toggle_favorite" @mouseenter="toggle_favorite_hover" @mouseleave="toggle_favorite_hover">{{ favorite_hover ? 'favorite' : 'favorite_border' }}</button>
+                        aria-label="Favorite" @click="toggle_favorite">{{ favorite_hover ? 'favorite' : 'favorite_border' }}</button>
                 </section>
             </div>
         </header>

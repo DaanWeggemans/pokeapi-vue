@@ -10,10 +10,10 @@
 </script>
 
 <template>
-    <div class="pokemon">
+    <button class="pokemon">
         <img @error="image_fallback($event)" :src="image" :alt="name">
         <p>{{ name }}</p>
-    </div>
+    </button>
 </template>
 
 <style scoped>
