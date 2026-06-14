@@ -8,7 +8,7 @@
         image: String
     });
 
-    const image_fallback = (event) => event.target.src = '/images/pokeball-placeholder.png';
+    const image_fallback = (event) => event.target.src = '/pokeapi-vue/images/pokeball-placeholder.png';
 </script>
 
 <template>

@@ -58,7 +58,7 @@
     );
 
     const get_stat = (stat) => Object.values(pokemon.value.stats)?.find(x => x.name == stat)?.base ?? "N/A";
-    const image_fallback = (event) => event.target.src = '/images/pokeball-placeholder.png';
+    const image_fallback = (event) => event.target.src = '/pokeapi-vue/images/pokeball-placeholder.png';
     const toggle_evolutions = () => show_evolution_chain.value = !show_evolution_chain.value;
 
     function extract_extension(data) {
