@@ -22,10 +22,13 @@
         navigation_drawer_element.querySelector('.mdc-list').addEventListener('click', () => navigation_drawer.open = false);
     });
 
-    watch(selected_pokemon, async (newVal) => {
-        if (newVal?.id) {
+    watch(selected_pokemon, async (newVal, oldVal) => {
+        if (!oldVal?.id && newVal?.id) {
             saved_scroll_y.value = window.scrollY;
-        } else {
+            return;
+        }
+
+        if (oldVal?.id && !newVal?.id) {
             await nextTick();
             window.scrollTo(0, saved_scroll_y.value);
         }
