@@ -1,11 +1,13 @@
 <script setup>
     import { MDCTopAppBar } from '@material/top-app-bar';
     import { MDCDrawer } from '@material/drawer';
-    import { RouterView } from 'vue-router';
+    import { RouterView, useRouter } from 'vue-router';
     import { nextTick, onMounted, ref, watch } from 'vue';
     import Header from './components/Header.vue';
     import Drawer from './components/Drawer.vue';
     import Sheet from './components/Sheet.vue';
+
+    const router = useRouter();
     
     const selected_pokemon = ref({ });
     const saved_scroll_y = ref(0);
@@ -36,7 +38,15 @@
 
     const openDrawer = () => navigation_drawer.open = true;
     const selectPokemon = (pokemon) => selected_pokemon.value = pokemon;
-    const closeSheet = () => selected_pokemon.value = { };
+    function closeSheet() {
+        selected_pokemon.value = { };
+        if (!history.state.back) {
+            router.push("/");
+            return;
+        }
+
+        router.back();
+    };
 </script>
 
 <template>

@@ -38,6 +38,18 @@
         { immediate: true }
     );
 
+    watch(
+        () => route.params.id,
+        (new_id) => {
+            const local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
+            const pokemon = local_pokemons.find(x => x.id == new_id);
+            if (!pokemon) return;
+
+            emit('select-pokemon', pokemon);
+        },
+        { immediate: true }
+    );
+
     async function getPokemons() {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1500");
         if (!response.ok) return;
@@ -82,7 +94,6 @@
                 :name="pokemon.name"
                 :url="pokemon.url"
                 :image="pokemon.image"
-                @click="emit('select-pokemon', pokemon)"
             />
         </div>
     </div>
