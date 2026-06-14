@@ -1,6 +1,6 @@
 <script setup>
     import { ref, watch } from 'vue';
-import PokemonCard from './PokemonCard.vue';
+    import PokemonCard from './PokemonCard.vue';
 
     const props = defineProps({
         isOpen: Boolean,
