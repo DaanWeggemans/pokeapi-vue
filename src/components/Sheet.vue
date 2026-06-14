@@ -1,6 +1,7 @@
 <script setup>
     import { ref, watch } from 'vue';
     import EvolutionChain from './EvolutionChain.vue';
+import { useShare } from '@vueuse/core';
 
     const props = defineProps({
         isOpen: Boolean,
@@ -8,6 +9,7 @@
     });
 
     const emit = defineEmits(['select-pokemon', 'close-sheet']);
+    const { share, isSupported } = useShare();
 
     const pokemon = ref({});
     const show_evolution_chain = ref(false);
@@ -97,6 +99,14 @@
         favorite_hover.value = !favorite_hover.value;
         localStorage.setItem("favorited_pokemons", JSON.stringify(favorited));
     }
+
+    function share_pokemon() {
+        share({
+            title: "I shared a pokemon with you!",
+            text: `Hey man!\n\nI wanted to share this pokemon with me! It is an ${pokemon.value.name}!\nHope you like it!`,
+            url: window.location.href
+        });
+    }
 </script>
 
 <template>
@@ -111,6 +121,8 @@
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                     <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
                         aria-label="Favorite" @click="toggle_favorite">{{ favorite_hover ? 'favorite' : 'favorite_border' }}</button>
+                    <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+                        aria-label="Share" @click="share_pokemon" v-if="isSupported">share</button>
                 </section>
             </div>
         </header>
@@ -165,7 +177,7 @@
                             </div>
                         </section>
                     </div>
-                    <button id="toggle-evolution" @click="toggle_evolutions" class="mdc-button mdc-button--raised">
+                    <button v-if="pokemon.id < 10000" id="toggle-evolution" @click="toggle_evolutions" class="mdc-button mdc-button--raised">
                         <span class="mdc-button__label">See Evolutions</span>
                     </button>
                 </div>
