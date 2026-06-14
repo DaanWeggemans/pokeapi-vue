@@ -100,7 +100,7 @@
 </script>
 
 <template>
-    <section class="sheet" :class="isOpen ? '' : ' sheet-out-of-view'" role="dialog" aria-modal="true" :aria-hidden="!isOpen" :inert="!isOpen">
+    <section class="sheet" :class="isOpen ? '' : ' sheet-out-of-view'" role="dialog" aria-modal="true" :inert="!isOpen">
         <header class="mdc-top-app-bar">
             <div class="mdc-top-app-bar__row">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">

@@ -7,19 +7,8 @@
     const pokemons = ref([]);
 
     onMounted(() => {
-        let local_pokemons = [];
-        try {
-            local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
-        } catch {
-            localStorage.removeItem("pokemons");
-        }
-
-        let favorited_pokemons = [];
-        try {
-            favorited_pokemons = JSON.parse(localStorage.getItem("favorited_pokemons") ?? "[]");
-        } catch {
-            localStorage.removeItem("favorited_pokemons");
-        }
+        const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
+        const favorited_pokemons = JSON.parse(localStorage.getItem("favorited_pokemons") ?? "[]");
 
         pokemons.value = local_pokemons.filter(x => favorited_pokemons.includes(x.id));
     });
