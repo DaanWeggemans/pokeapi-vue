@@ -6,7 +6,7 @@
     import Header from './components/Header.vue';
     import Drawer from './components/Drawer.vue';
     import Sheet from './components/Sheet.vue';
-import Snackbar from './components/Snackbar.vue';
+    import Snackbar from './components/Snackbar.vue';
 
     const router = useRouter();
     
@@ -41,12 +41,8 @@ import Snackbar from './components/Snackbar.vue';
     const selectPokemon = (pokemon) => selected_pokemon.value = pokemon;
     function closeSheet() {
         selected_pokemon.value = { };
-        if (!history.state.back) {
-            router.push("/");
-            return;
-        }
-
-        router.back();
+        const previous_location = localStorage.getItem("previous_location") ?? "/";
+        router.push(previous_location);
     };
 </script>
 

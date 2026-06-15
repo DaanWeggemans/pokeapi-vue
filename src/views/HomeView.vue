@@ -38,18 +38,6 @@
         { immediate: true }
     );
 
-    watch(
-        () => route.params.id,
-        (new_id) => {
-            const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
-            const pokemon = local_pokemons.find(x => x.id == new_id);
-            if (!pokemon) return;
-
-            emit('select-pokemon', pokemon);
-        },
-        { immediate: true }
-    );
-
     async function getPokemons() {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1500");
         if (!response.ok) return;
@@ -74,6 +62,11 @@
         if (distance_to_bottom > 50) return;
         updateList();
     }
+
+    function handleClick(pokemon) {
+        emit('select-pokemon', pokemon);
+        localStorage.setItem("previous_location", "/");
+    }
 </script>
 
 <template>
@@ -84,6 +77,7 @@
                 :name="pokemon.name"
                 :url="pokemon.url"
                 :image="pokemon.image"
+                @click="handleClick(pokemon)"
             />
         </div>
     </div>

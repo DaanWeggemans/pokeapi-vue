@@ -12,6 +12,11 @@
 
         pokemons.value = local_pokemons.filter(x => favorited_pokemons.includes(x.id));
     });
+
+    function handleClick(pokemon) {
+        emit('select-pokemon', pokemon);
+        localStorage.setItem("previous_location", "/favorites");
+    }
 </script>
 
 <template>
@@ -23,7 +28,7 @@
                     :name="pokemon.name"
                     :url="pokemon.url"
                     :image="pokemon.image"
-                    @click="emit('select-pokemon', pokemon)"
+                    @click="handleClick(pokemon)"
                 />
             </template>
             <p class="empty" v-else>You dont have any favorite pokemons.</p>
