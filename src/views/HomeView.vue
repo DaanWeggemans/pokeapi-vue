@@ -77,7 +77,7 @@
 
     function handleClick(pokemon) {
         emit('select-pokemon', pokemon);
-        sessionStorage.setItem("previous_location", "/");
+        sessionStorage.setItem("previous_location", `/${encodeURIComponent(search_by.value)}`);
     }
 </script>
 
