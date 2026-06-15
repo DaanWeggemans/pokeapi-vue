@@ -17,13 +17,16 @@
 <template>
     <div class="pokemons-container">
         <div class="pokemons">
-            <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id"
-                :id="pokemon.id"
-                :name="pokemon.name"
-                :url="pokemon.url"
-                :image="pokemon.image"
-                @click="emit('select-pokemon', pokemon)"
-            />
+            <template v-if="pokemons.length">
+                <PokemonCard v-for="pokemon in pokemons" :key="pokemon.id"
+                    :id="pokemon.id"
+                    :name="pokemon.name"
+                    :url="pokemon.url"
+                    :image="pokemon.image"
+                    @click="emit('select-pokemon', pokemon)"
+                />
+            </template>
+            <p class="empty" v-else>You dont have any favorite pokemons.</p>
         </div>
     </div>
 </template>
@@ -35,11 +38,18 @@
     }
     
     .pokemons {
-        grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
         max-width: 1200px;
         margin: 0 auto;
         padding: 10px;
         display: grid;
         gap: 5px;
+    }
+
+    .empty {
+        font-family: Roboto, sans-serif;
+        text-align: center;
+        color: white;
+        margin: 20px;
     }
 </style>

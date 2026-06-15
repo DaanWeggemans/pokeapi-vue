@@ -1,10 +1,10 @@
 <script setup>
+    import { map_pokemons } from '@/common/mapping';
     import PokemonCard from '@/components/PokemonCard.vue';
     import { onMounted, onUnmounted, ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
 
     const ITEMS_PER_PAGE = 36;
-    const POKEMONS_KEY = "pokemons";
 
     const route = useRoute();
 
@@ -16,11 +16,11 @@
     const search_by = ref("");
 
     onMounted(async () => {
-        const local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
+        const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
 
         if (local_pokemons.length) {
             cached_pokemons = local_pokemons;
-            updateList();
+            updateList(true);
         } else await getPokemons();
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -41,7 +41,7 @@
     watch(
         () => route.params.id,
         (new_id) => {
-            const local_pokemons = JSON.parse(localStorage.getItem(POKEMONS_KEY) ?? "[]");
+            const local_pokemons = JSON.parse(localStorage.getItem("pokemons") ?? "[]");
             const pokemon = local_pokemons.find(x => x.id == new_id);
             if (!pokemon) return;
 
@@ -54,19 +54,9 @@
         const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1500");
         if (!response.ok) return;
         const data = await response.json();
-        cached_pokemons = data.results.map(pokemon => {
-            const parts = pokemon.url.split('/').filter(x => x);
-            const index = Number(parts[parts.length - 1]);
 
-            return {
-                id: index,
-                name: pokemon.name.replaceAll('-', ' '),
-                url: pokemon.url,
-                image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
-            };
-        });
-
-        localStorage.setItem(POKEMONS_KEY, JSON.stringify(cached_pokemons));
+        cached_pokemons = map_pokemons(data);
+        localStorage.setItem("pokemons", JSON.stringify(cached_pokemons));
         updateList();
     }
 
@@ -106,7 +96,7 @@
     }
     
     .pokemons {
-        grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
         max-width: 1200px;
         margin: 0 auto;
         padding: 10px;

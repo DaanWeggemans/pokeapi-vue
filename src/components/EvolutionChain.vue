@@ -1,6 +1,7 @@
 <script setup>
     import { ref, watch } from 'vue';
     import PokemonCard from './PokemonCard.vue';
+    import { map_evolution } from '@/common/mapping.js';
 
     const props = defineProps({
         isOpen: Boolean,
@@ -48,7 +49,7 @@
                     }
 
                     const data_evolution = await response_evolution.json();
-                    extension.evolutions = extract_evolution(data_evolution.chain);
+                    extension.evolutions = map_evolution(data_evolution.chain);
                 }
 
                 local_pokemons[selected_pokemon_index] = { ...local_pokemons[selected_pokemon_index], ...extension };
@@ -59,27 +60,6 @@
         },
         { immediate: true }
     );
-
-    function extract_evolution(evolution) {
-        if (!evolution || (Array.isArray(evolution) && !evolution.length))
-            return [];
-
-        const evolves_to = Array.isArray(evolution) ? evolution : [evolution];
-
-        const evolves_to_item = evolves_to.map(x => {
-            const parts = x.species.url.split('/').filter(x => x);
-            const index = Number(parts[parts.length - 1]);
-            
-            return {
-                id: index,
-                name: x.species.name.replaceAll('-', ' '),
-                image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
-            };
-        });
-        
-        const next_evolves_to = evolves_to.flatMap(node => node.evolves_to || []);
-        return [evolves_to_item, ...extract_evolution(next_evolves_to)];
-    }
 </script>
 
 <template>

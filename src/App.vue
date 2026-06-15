@@ -6,6 +6,7 @@
     import Header from './components/Header.vue';
     import Drawer from './components/Drawer.vue';
     import Sheet from './components/Sheet.vue';
+import Snackbar from './components/Snackbar.vue';
 
     const router = useRouter();
     
@@ -69,6 +70,7 @@
         @select-pokemon="selectPokemon"
         @close-sheet="closeSheet"
     />
+    <Snackbar />
 </template>
 
 <style scoped>

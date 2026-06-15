@@ -2,6 +2,7 @@
     import { ref, watch } from 'vue';
     import EvolutionChain from './EvolutionChain.vue';
     import { useShare } from '@vueuse/core';
+    import { map_details } from '@/common/mapping.js';
 
     const props = defineProps({
         isOpen: Boolean,
@@ -32,14 +33,14 @@
             }
 
             if (!local_pokemons[selected_pokemon_index].abilities) {
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${local_pokemons[selected_pokemon_index].id}`);
+                const response = await fetch(local_pokemons[selected_pokemon_index].url);
                 if (!response.ok) {
                     emit('close-sheet');
                     return;
                 }
 
                 const data = await response.json();
-                const extension = extract_extension(data);
+                const extension = map_details(data);
 
                 local_pokemons[selected_pokemon_index] = { ...local_pokemons[selected_pokemon_index], ...extension };
                 localStorage.setItem("pokemons", JSON.stringify(local_pokemons));
@@ -60,31 +61,6 @@
     const get_stat = (stat) => Object.values(pokemon.value.stats)?.find(x => x.name == stat)?.base ?? "N/A";
     const image_fallback = (event) => event.target.src = '/pokeapi-vue/images/pokeball-placeholder.png';
     const toggle_evolutions = () => show_evolution_chain.value = !show_evolution_chain.value;
-
-    function extract_extension(data) {
-        return {
-            abilities: data.abilities.map(ability => {
-                return {
-                    name: ability.ability.name.replace(/[- ].|^./g, letter => letter.replaceAll("-", " ").toUpperCase()),
-                    isHidden: ability.is_hidden
-                };
-            }),
-            stats: data.stats.map(stat => {
-                return {
-                    base: stat.base_stat,
-                    name: stat.stat.name
-                };
-            }),
-            types: data.types.map(type => {
-                const index = Number(type.type.url.substring(type.type.url.indexOf("type")).split("/")[1]) || 1;
-                const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/brilliant-diamond-shining-pearl/${index}.png`;
-                return {
-                    name: type.type.name,
-                    img: img
-                };
-            })
-        };
-    }
 
     function toggle_favorite() {
         let favorited = JSON.parse(localStorage.getItem("favorited_pokemons") ?? "[]");
@@ -138,7 +114,7 @@
                         <section>
                             <h2 class="pokemon-name">{{ pokemon.name }}</h2>
                             <div class="types">
-                                <img v-for="item of pokemon.types" :src="item.img" :alt="item.name"
+                                <img v-for="item of pokemon.types" :src="item.image" :alt="item.name"
                                     :title="item.name.replace(/^./g, (letter) => letter.toUpperCase())">
                             </div>
                             <h2>Abilities</h2>
