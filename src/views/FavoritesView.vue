@@ -15,7 +15,7 @@
 
     function handleClick(pokemon) {
         emit('select-pokemon', pokemon);
-        localStorage.setItem("previous_location", "/favorites");
+        sessionStorage.setItem("previous_location", "/favorites");
     }
 </script>
 

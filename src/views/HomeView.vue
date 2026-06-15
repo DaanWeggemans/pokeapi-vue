@@ -65,7 +65,7 @@
 
     function handleClick(pokemon) {
         emit('select-pokemon', pokemon);
-        localStorage.setItem("previous_location", "/");
+        sessionStorage.setItem("previous_location", "/");
     }
 </script>
 

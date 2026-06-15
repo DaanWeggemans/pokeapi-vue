@@ -41,7 +41,7 @@
     const selectPokemon = (pokemon) => selected_pokemon.value = pokemon;
     function closeSheet() {
         selected_pokemon.value = { };
-        const previous_location = localStorage.getItem("previous_location") ?? "/";
+        const previous_location = sessionStorage.getItem("previous_location") ?? "/";
         router.push(previous_location);
     };
 </script>
