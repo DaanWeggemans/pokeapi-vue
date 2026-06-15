@@ -45,7 +45,7 @@
 
         cached_pokemons = map_pokemons(data);
         localStorage.setItem("pokemons", JSON.stringify(cached_pokemons));
-        updateList();
+        updateList(true);
     }
 
     function updateList(reset_length = false) {
